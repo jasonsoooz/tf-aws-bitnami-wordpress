@@ -1,7 +1,7 @@
 # tf-aws-bitnami-wordpress
 
 This project is based on helpful **AWS** projects   
-https://github.com/terraform-providers/terraform-provider-aws.git  (examples/two-tier)
+https://github.com/terraform-providers/terraform-provider-aws.git (examples/two-tier)  
 https://github.com/davidjeddy/wordpress-terraform
 
 This project uses **Terraform** to automatically create a **Bitnami Wordpress EC2** server 
