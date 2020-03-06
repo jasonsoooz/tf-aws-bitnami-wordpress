@@ -58,6 +58,9 @@ EC2 Actions -> Instance Settings -> Get System Log = get password
 
 ### Manual Wordpress config after Terraform changes
 
+For details, see aws notes:  
+~/jason-code/notes/js-notes/development/aws/aws-manual-wordpress-changes-after-terraform.md
+
 1. Install **https before** login with admin user
 2. **Restore** Wordpress site: eg by installing backup / restore plugin (UpdraftPlus Backup/Restore)
 3. Hide **bitnami manage** banner
@@ -104,4 +107,23 @@ $ docker-compose run terraform apply
 
 # When you want to remove resources
 $ docker-compose run terraform destroy
+```
+## ToDo
+1. Fix error below.  Simply removing ${} doesn't work.  What is proper fix?
+
+```
+Warning: Interpolation-only expressions are deprecated
+
+  on main.tf line 14, in resource "aws_internet_gateway" "default":
+  14:   vpc_id = "${aws_vpc.default.id}"
+
+Terraform 0.11 and earlier required all non-constant expressions to be
+provided via interpolation syntax, but this pattern is now deprecated. To
+silence this warning, remove the "${ sequence from the start and the }"
+sequence from the end of this expression, leaving just the inner expression.
+
+Template interpolation syntax is still used to construct strings from
+expressions when the template includes multiple interpolation sequences or a
+mixture of literal strings and interpolations. This deprecation applies only
+to templates that consist entirely of a single interpolation sequence.
 ```
