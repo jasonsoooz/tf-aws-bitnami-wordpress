@@ -58,8 +58,7 @@ EC2 Actions -> Instance Settings -> Get System Log = get password
 
 ### Manual Wordpress config after Terraform changes
 
-For details, see aws notes:  
-~/jason-code/notes/js-notes/development/aws/aws-manual-wordpress-changes-after-terraform.md
+For details, see aws local notes  
 
 1. Install **https before** login with admin user
 2. **Restore** Wordpress site: eg by installing backup / restore plugin (UpdraftPlus Backup/Restore)
