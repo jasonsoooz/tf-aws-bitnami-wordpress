@@ -11,19 +11,19 @@ resource "aws_vpc" "default" {
 
 # Create an internet gateway to give our subnet access to the outside world
 resource "aws_internet_gateway" "default" {
-  vpc_id = "${aws_vpc.default.id}"
+  vpc_id = aws_vpc.default.id
 }
 
 # Grant the VPC internet access on its main route table
 resource "aws_route" "internet_access" {
-  route_table_id         = "${aws_vpc.default.main_route_table_id}"
+  route_table_id         = aws_vpc.default.main_route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.default.id}"
+  gateway_id             = aws_internet_gateway.default.id
 }
 
 # Create a subnet to launch our instances into
 resource "aws_subnet" "default" {
-  vpc_id                  = "${aws_vpc.default.id}"
+  vpc_id                  = aws_vpc.default.id
   cidr_block              = "172.31.0.0/20"
   map_public_ip_on_launch = true
 }
@@ -33,7 +33,7 @@ resource "aws_subnet" "default" {
 resource "aws_security_group" "wp_security_group" {
   name        = "wordpress_certified"
   description = "Used in the terraform"
-  vpc_id      = "${aws_vpc.default.id}"
+  vpc_id      = aws_vpc.default.id
 
   # SSH access from anywhere
   ingress {
@@ -85,8 +85,8 @@ resource "aws_security_group" "wp_security_group" {
 }
 
 resource "aws_key_pair" "auth" {
-  key_name   = "${var.key_name}"
-  public_key = "${file(var.public_key_path)}"
+  key_name   = var.key_name
+  public_key = file(var.public_key_path)
 }
 
 resource "aws_instance" "web" {
@@ -95,7 +95,7 @@ resource "aws_instance" "web" {
   connection {
     # The default username for our AMI
     user = "bitnami"
-    host = "${self.public_ip}"
+    host = self.public_ip
     # The connection will use the local SSH agent for authentication.
   }
 
@@ -103,18 +103,18 @@ resource "aws_instance" "web" {
 
   # Lookup the correct AMI based on the region
   # we specified
-  ami = "${lookup(var.aws_amis, var.aws_region)}"
+  ami = lookup(var.aws_amis, var.aws_region)
 
   # The name of our SSH keypair we created above.
-  key_name = "${aws_key_pair.auth.id}"
+  key_name = aws_key_pair.auth.id
 
   # Our Security group to allow HTTP and SSH access
-  vpc_security_group_ids = ["${aws_security_group.wp_security_group.id}"]
+  vpc_security_group_ids = [aws_security_group.wp_security_group.id]
 
   # We're going to launch into the same subnet as our ELB. In a production
   # environment it's more common to have a separate private subnet for
   # backend instances.
-  subnet_id = "${aws_subnet.default.id}"
+  subnet_id = aws_subnet.default.id
 
   tags = {
     Name = "wordpress"

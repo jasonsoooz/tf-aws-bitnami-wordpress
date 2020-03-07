@@ -107,22 +107,3 @@ $ docker-compose run terraform apply
 # When you want to remove resources
 $ docker-compose run terraform destroy
 ```
-## ToDo
-1. Fix error below.  Simply removing ${} doesn't work.  What is proper fix?
-
-```
-Warning: Interpolation-only expressions are deprecated
-
-  on main.tf line 14, in resource "aws_internet_gateway" "default":
-  14:   vpc_id = "${aws_vpc.default.id}"
-
-Terraform 0.11 and earlier required all non-constant expressions to be
-provided via interpolation syntax, but this pattern is now deprecated. To
-silence this warning, remove the "${ sequence from the start and the }"
-sequence from the end of this expression, leaving just the inner expression.
-
-Template interpolation syntax is still used to construct strings from
-expressions when the template includes multiple interpolation sequences or a
-mixture of literal strings and interpolations. This deprecation applies only
-to templates that consist entirely of a single interpolation sequence.
-```
